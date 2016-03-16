@@ -8,6 +8,8 @@ public class Main {
 //		TODO: parse input files and populate cellIndexObject
 		CellIndexObject cellIndexObject = null;
 		
+//		TODO: calculate optimal M
 		
+		new CIMSimulation(cellIndexObject);
 	}
 }
