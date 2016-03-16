@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CellIndexObject {
 
-	private Float interactionRadius;
+	private Double interactionRadius;
 	private Integer spaceDimension; // All particle's coordinates are contained
 									// inside spaceDimension x spaceDimension
 	private Integer particlesAmount;
@@ -17,7 +17,7 @@ public class CellIndexObject {
 		this.hasPeriodicBoundaries = false;
 	}
 
-	public Float getInteractionRadius() {
+	public Double getInteractionRadius() {
 		return interactionRadius;
 	}
 
@@ -43,6 +43,10 @@ public class CellIndexObject {
 		return spaceDimension / ((float) M);
 	}
 
+	public boolean hasPeriodicBoundaries() {
+		return hasPeriodicBoundaries;
+	}
+
 	public static class Builder {
 		private CellIndexObject cellIndexObject;
 
@@ -55,7 +59,7 @@ public class CellIndexObject {
 			return new Builder();
 		}
 
-		public Builder withInteractionRadius(float interactionRadius) {
+		public Builder withInteractionRadius(double interactionRadius) {
 			cellIndexObject.interactionRadius = interactionRadius;
 			return this;
 		}
@@ -79,7 +83,7 @@ public class CellIndexObject {
 			cellIndexObject.particles.add(particle);
 			return this;
 		}
-		
+
 		public Builder withPeriodicBoundaries(boolean hasPeriodicBoundaries) {
 			cellIndexObject.hasPeriodicBoundaries = hasPeriodicBoundaries;
 			return this;
