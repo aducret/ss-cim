@@ -3,6 +3,8 @@ package parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 
 import model.CellIndexObject;
@@ -14,9 +16,9 @@ public class InformationParser {
 		CellIndexObject.Builder builder = CellIndexObject.Builder.create();
 		
 		InputStream dynamicIS = new FileInputStream(dynamicFilePath);
-		Scanner dynamicScanner = new Scanner(dynamicIS);
+		Scanner dynamicScanner = new Scanner(dynamicIS).useLocale(Locale.US);
 		InputStream staticIS = new FileInputStream(staticFilePath);
-		Scanner staticScanner = new Scanner(staticIS);
+		Scanner staticScanner = new Scanner(staticIS).useLocale(Locale.US);
 		
 		int particlesAmount = staticScanner.nextInt();
 		int spaceDimension = staticScanner.nextInt();
@@ -32,7 +34,7 @@ public class InformationParser {
 			double x = dynamicScanner.nextDouble();
 			double y = dynamicScanner.nextDouble();
 			Particle particle = new Particle(i, x, y, radius, color);
-			builder = builder.withParticle(particle);			
+			builder = builder.withParticle(particle);	
 		}
 		
 		return builder;

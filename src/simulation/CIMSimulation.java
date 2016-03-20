@@ -24,8 +24,6 @@ public class CIMSimulation {
 		initializeParticlesContainer();
 		distributeParticles();
 		calculateDistances();
-		
-		printCells();
 	}
 	
 	private void printCells() {
@@ -106,8 +104,8 @@ public class CIMSimulation {
 	}
 
 	private boolean isOutOfBounds(int i, int j) {
-		return i >= 0 && j >= 0 && i < cellIndexObject.getM()
-				&& j < cellIndexObject.getM();
+		return !(i >= 0 && j >= 0 && i < cellIndexObject.getM()
+				&& j < cellIndexObject.getM());
 	}
 
 	private CellWrapper generateCellWrapper(int i, int j) {

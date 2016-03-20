@@ -18,6 +18,7 @@ public class Main {
 		CellIndexObject.Builder builder = InformationParser.generateCellIndexObject(dynamicFilePath, staticFilePath);
 		
 		builder = builder.withM(M)
+				.withPeriodicBoundaries(true)
 				.withInteractionRadius(INTERACTION_RADIUS);
 		CellIndexObject cellIndexObject = builder.build();
 		new CIMSimulation(cellIndexObject).simulate();
