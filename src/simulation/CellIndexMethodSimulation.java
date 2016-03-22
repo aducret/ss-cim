@@ -4,30 +4,36 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Cell;
-import model.CellIndexObject;
-import model.CellWrapper;
-import model.Particle;
-
 import com.sun.istack.internal.NotNull;
 
-public class CIMSimulation {
+import model.Cell;
+import model.CellWrapper;
+import model.Particle;
+import model.SimulationData;
 
-	private CellIndexObject cellIndexObject;
+public class CellIndexMethodSimulation implements Simulation {
+
+	private SimulationData simulationData;
 	private Cell[][] cells;
-
-	public CIMSimulation(@NotNull CellIndexObject cellIndexObject) {
-		this.cellIndexObject = cellIndexObject;
+	private int M;
+	private boolean hasPeriodicBoundaries;
+	
+	public CellIndexMethodSimulation(Integer M, Boolean hasPeriodicBoundaries) {
+		if (M == null || hasPeriodicBoundaries == null)
+			throw new IllegalArgumentException("fuck everything");
+		this.M = M;
+		this.hasPeriodicBoundaries = hasPeriodicBoundaries;
 	}
 	
-	public void simulate() {
+	@Override
+	public void simulate(SimulationData simulationData) {
+		this.simulationData = simulationData;
 		initializeParticlesContainer();
 		distributeParticles();
 		calculateDistances();
 	}
 	
 	private void printCells() {
-		int M = cellIndexObject.getM();
 		for (int i = 0; i < M; i++) {
 			for (int j = 0; j < M; j++) {
 				System.out.println("cell: (" + i + ", " + j + "): " + cells[i][j]);
@@ -36,7 +42,6 @@ public class CIMSimulation {
 	}
 
 	private void calculateDistances() {
-		int M = cellIndexObject.getM();
 		for (int i = 0; i < M; i++) {
 			for (int j = 0; j < M; j++) {
 				Cell cell = cells[i][j];
@@ -54,6 +59,7 @@ public class CIMSimulation {
 				for (Particle neighborParticle: neighborCell.getParticles()) {
 					if (particle.equals(neighborParticle)) continue;
 					if (!satisfiesDistance(particle, neighborParticle, cellWrapper)) continue;
+					if (particle.getNeighbors().contains(neighborParticle)) continue;
 					particle.getNeighbors().add(neighborParticle);
 					neighborParticle.getNeighbors().add(particle);
 				}
@@ -62,7 +68,7 @@ public class CIMSimulation {
 	}
 	
 	private boolean satisfiesDistance(Particle particleA, Particle particleB, CellWrapper particleBWrapper) {
-		return distanceBetween(particleA, particleB, particleBWrapper) < cellIndexObject.getInteractionRadius();
+		return distanceBetween(particleA, particleB, particleBWrapper) < simulationData.getInteractionRadius();
 	}
 	
 	private double distanceBetween(Particle particleA, Particle particleB, CellWrapper particleBWrapper) {
@@ -70,9 +76,6 @@ public class CIMSimulation {
 		double ay = particleA.getY();
 		double bx = particleB.getX() + particleBWrapper.getxOffset();
 		double by = particleB.getY() + particleBWrapper.getyOffset();
-		if (particleA.getId() == 22 || particleB.getId() == 22) {
-			System.out.println(ax + ", " + ay + "  -  " + bx + ", " + by);
-		}
 		return distanceBetween(ax, ay, bx, by) - particleA.getRadius() - particleB.getRadius();
 	}
 	
@@ -86,7 +89,7 @@ public class CIMSimulation {
 		List<CellWrapper> cellWrappers = new ArrayList<CellWrapper>();
 		for (Point direction : directions) {
 			if (isOutOfBounds(direction.x, direction.y)
-					&& !cellIndexObject.hasPeriodicBoundaries())
+					&& !hasPeriodicBoundaries)
 				continue;
 			cellWrappers.add(generateCellWrapper(direction.x, direction.y));
 		}
@@ -104,13 +107,11 @@ public class CIMSimulation {
 	}
 
 	private boolean isOutOfBounds(int i, int j) {
-		return !(i >= 0 && j >= 0 && i < cellIndexObject.getM()
-				&& j < cellIndexObject.getM());
+		return !(i >= 0 && j >= 0 && i < M
+				&& j < M);
 	}
 
 	private CellWrapper generateCellWrapper(int i, int j) {
-		int M = cellIndexObject.getM();
-
 		int xOffset = calculateOffset(j);
 		int yOffset = calculateOffset(i);
 		int realI = (i + M) % M;
@@ -121,31 +122,34 @@ public class CIMSimulation {
 
 	private int calculateOffset(int x) {
 		if (x < 0)
-			return -cellIndexObject.getSpaceDimension();
-		if (x >= cellIndexObject.getM())
-			return cellIndexObject.getSpaceDimension();
+			return -simulationData.getSpaceDimension();
+		if (x >= M)
+			return simulationData.getSpaceDimension();
 		return 0;
 	}
 
 	private void distributeParticles() {
-		for (Particle particle : cellIndexObject.getParticles()) {
+		for (Particle particle : simulationData.getParticles()) {
 			int row = (int) Math.floor(particle.getY()
-					/ cellIndexObject.getCellDimension());
+					/ getCellDimension());
 			int column = (int) Math.floor(particle.getX()
-					/ cellIndexObject.getCellDimension());
+					/ getCellDimension());
 			cells[row][column].getParticles().add(particle);
 		}
 	}
 
 	private void initializeParticlesContainer() {
-		Integer M = cellIndexObject.getM();
-		if (M == null)
-			throw new IllegalArgumentException("fuck everything");
 		cells = new Cell[M][M];
 		for (int i = 0; i < M; i++) {
 			for (int j = 0; j < M; j++) {
 				cells[i][j] = new Cell();
 			}
 		}
+	}
+	
+	private Float getCellDimension() {
+		if (simulationData.getSpaceDimension() == null)
+			return null;
+		return simulationData.getSpaceDimension() / ((float) M);
 	}
 }

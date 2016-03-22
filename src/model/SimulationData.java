@@ -3,18 +3,15 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CellIndexObject {
+public class SimulationData {
 
 	private Double interactionRadius;
 	private Integer spaceDimension; // All particle's coordinates are contained
 									// inside spaceDimension x spaceDimension
 	private Integer particlesAmount;
-	private Integer M; // MxM is the total amount of cells
 	private List<Particle> particles;
-	private boolean hasPeriodicBoundaries;
 
-	private CellIndexObject() {
-		this.hasPeriodicBoundaries = false;
+	private SimulationData() {
 	}
 
 	public Double getInteractionRadius() {
@@ -28,30 +25,16 @@ public class CellIndexObject {
 	public Integer getParticlesAmount() {
 		return particlesAmount;
 	}
-
-	public Integer getM() {
-		return M;
-	}
-
+	
 	public List<Particle> getParticles() {
 		return particles;
 	}
 
-	public Float getCellDimension() {
-		if (M == null || spaceDimension == null)
-			return null;
-		return spaceDimension / ((float) M);
-	}
-
-	public boolean hasPeriodicBoundaries() {
-		return hasPeriodicBoundaries;
-	}
-
 	public static class Builder {
-		private CellIndexObject cellIndexObject;
+		private SimulationData cellIndexObject;
 
 		private Builder() {
-			cellIndexObject = new CellIndexObject();
+			cellIndexObject = new SimulationData();
 			cellIndexObject.particles = new ArrayList<>();
 		}
 
@@ -61,11 +44,6 @@ public class CellIndexObject {
 
 		public Builder withInteractionRadius(double interactionRadius) {
 			cellIndexObject.interactionRadius = interactionRadius;
-			return this;
-		}
-
-		public Builder withM(int M) {
-			this.cellIndexObject.M = M;
 			return this;
 		}
 
@@ -84,12 +62,7 @@ public class CellIndexObject {
 			return this;
 		}
 
-		public Builder withPeriodicBoundaries(boolean hasPeriodicBoundaries) {
-			cellIndexObject.hasPeriodicBoundaries = hasPeriodicBoundaries;
-			return this;
-		}
-
-		public CellIndexObject build() {
+		public SimulationData build() {
 			return cellIndexObject;
 		}
 	}

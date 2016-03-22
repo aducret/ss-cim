@@ -7,13 +7,13 @@ import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
-import model.CellIndexObject;
+import model.SimulationData;
 import model.Particle;
 
 public class InformationParser {
 	
-	public static CellIndexObject.Builder generateCellIndexObject(String dynamicFilePath, String staticFilePath) throws FileNotFoundException {
-		CellIndexObject.Builder builder = CellIndexObject.Builder.create();
+	public static SimulationData.Builder generateCellIndexObject(String dynamicFilePath, String staticFilePath) throws FileNotFoundException {
+		SimulationData.Builder builder = SimulationData.Builder.create();
 		
 		InputStream dynamicIS = new FileInputStream(dynamicFilePath);
 		Scanner dynamicScanner = new Scanner(dynamicIS).useLocale(Locale.US);
