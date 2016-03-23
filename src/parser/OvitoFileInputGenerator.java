@@ -49,5 +49,17 @@ public class OvitoFileInputGenerator {
 		return particle.getId() + " " + particle.getX() + " " + particle.getY() + " " + RGB + " "
 				+ particle.getRadius();
 	}
-
+	
+	public void generateResult(String filePath) throws FileNotFoundException, UnsupportedEncodingException {
+		PrintWriter writer = new PrintWriter(filePath, "UTF-8");
+		for (Particle particle: simulationData.getParticles()) {
+			writer.print(particle.getId() + "  ");
+			for (Particle p: particle.getNeighbors()) {
+				writer.print(p.getId() + " ");
+			}
+			writer.println("");
+		}
+		writer.close();
+	}
+	
 }
