@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/linux,java,eclipse
 
 ### Linux ###
@@ -81,3 +80,6 @@ local.properties
 
 # Code Recommenders
 .recommenders/
+
+# Results
+doc/results/
