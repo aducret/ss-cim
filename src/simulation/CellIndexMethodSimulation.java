@@ -4,15 +4,12 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.istack.internal.NotNull;
-
 import model.Cell;
 import model.CellWrapper;
 import model.Particle;
 import model.SimulationData;
 
 public class CellIndexMethodSimulation implements Simulation {
-
 	private SimulationData simulationData;
 	private Cell[][] cells;
 	private int M;
@@ -33,14 +30,6 @@ public class CellIndexMethodSimulation implements Simulation {
 		calculateDistances();
 	}
 	
-	private void printCells() {
-		for (int i = 0; i < M; i++) {
-			for (int j = 0; j < M; j++) {
-				System.out.println("cell: (" + i + ", " + j + "): " + cells[i][j]);
-			}
-		}
-	}
-
 	private void calculateDistances() {
 		for (int i = 0; i < M; i++) {
 			for (int j = 0; j < M; j++) {

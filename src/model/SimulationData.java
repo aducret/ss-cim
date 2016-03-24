@@ -1,15 +1,16 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SimulationData {
-
 	private Double interactionRadius;
 	private Integer spaceDimension; // All particle's coordinates are contained
 									// inside spaceDimension x spaceDimension
 	private Integer particlesAmount;
 	private List<Particle> particles;
+	private HashMap<Integer, Particle> particlesMap;
 
 	private SimulationData() {
 	}
@@ -29,6 +30,10 @@ public class SimulationData {
 	public List<Particle> getParticles() {
 		return particles;
 	}
+	
+	public Particle getParticleById(int id) {
+		return particlesMap.get(id);
+	}
 
 	public static class Builder {
 		private SimulationData cellIndexObject;
@@ -36,6 +41,7 @@ public class SimulationData {
 		private Builder() {
 			cellIndexObject = new SimulationData();
 			cellIndexObject.particles = new ArrayList<>();
+			cellIndexObject.particlesMap = new HashMap<>();
 		}
 
 		public static Builder create() {
@@ -59,6 +65,7 @@ public class SimulationData {
 
 		public Builder withParticle(Particle particle) {
 			cellIndexObject.particles.add(particle);
+			cellIndexObject.particlesMap.put(particle.getId(), particle);
 			return this;
 		}
 
