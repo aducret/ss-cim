@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 public class InputGenerator {
-	
 	public static void generateInput(int N, int L) throws FileNotFoundException, UnsupportedEncodingException {
 		PrintWriter dynamicWriter = new PrintWriter("doc/examples/Dynamic" + N + ".txt", "UTF-8");
 		PrintWriter staticWriter = new PrintWriter("doc/examples/Static" + N + ".txt", "UTF-8");

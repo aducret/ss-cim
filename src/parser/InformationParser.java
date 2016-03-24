@@ -3,15 +3,13 @@ package parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
-import model.SimulationData;
 import model.Particle;
+import model.SimulationData;
 
 public class InformationParser {
-	
 	public static SimulationData.Builder generateCellIndexObject(String dynamicFilePath, String staticFilePath) throws FileNotFoundException {
 		SimulationData.Builder builder = SimulationData.Builder.create();
 		

@@ -1,11 +1,9 @@
 package simulation;
 
-import model.CellWrapper;
 import model.Particle;
 import model.SimulationData;
 
 public class BruteForceSimulation implements Simulation {
-	
 	private SimulationData simulationData;
 
 	@Override

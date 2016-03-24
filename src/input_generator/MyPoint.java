@@ -3,7 +3,6 @@ package input_generator;
 import java.util.Locale;
 
 public class MyPoint {
-	
 	public float x;
 	public float y;
 	
